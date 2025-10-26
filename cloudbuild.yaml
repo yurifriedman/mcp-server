@@ -1,0 +1,54 @@
+# Google Cloud Build configuration for CI/CD
+# This file automates building and deploying your MCP server
+
+steps:
+  # Step 1: Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/gmail-mcp-repo/gmail-mcp-server:$COMMIT_SHA'
+      - '-t'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/gmail-mcp-repo/gmail-mcp-server:latest'
+      - '.'
+
+  # Step 2: Push the container image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/gmail-mcp-repo/gmail-mcp-server:$COMMIT_SHA'
+
+  # Step 3: Deploy to Cloud Run
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'gmail-mcp-server'
+      - '--image'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/gmail-mcp-repo/gmail-mcp-server:$COMMIT_SHA'
+      - '--region'
+      - 'us-central1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+      - '--memory'
+      - '512Mi'
+      - '--timeout'
+      - '60s'
+      - '--max-instances'
+      - '10'
+      - '--set-env-vars'
+      - 'GCP_PROJECT_ID=$PROJECT_ID'
+
+# Store images in Artifact Registry
+images:
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/gmail-mcp-repo/gmail-mcp-server:$COMMIT_SHA'
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/gmail-mcp-repo/gmail-mcp-server:latest'
+
+# Options
+options:
+  logging: CLOUD_LOGGING_ONLY
+  machineType: 'N1_HIGHCPU_8'
+
+# Timeout for entire build (10 minutes)
+timeout: 600s

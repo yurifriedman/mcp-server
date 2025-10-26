@@ -1,0 +1,33 @@
+node_modules
+dist
+npm-debug.log
+*.log
+.git
+.gitignore
+.env
+.env.local
+README.md
+DESIGN.md
+DEPLOYMENT_GUIDE.md
+
+# Sensitive files - NEVER include in container
+token.json
+client_secret_*.json
+*.pem
+*.key
+
+# Development files
+*.test.js
+*.spec.js
+test-*.js
+.vscode
+.idea
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.swp

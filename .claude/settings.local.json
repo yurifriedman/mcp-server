@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node read-excel.js:*)",
+      "Bash(node calculate-may-revenue.js:*)",
+      "Bash(node debug-columns.js:*)",
+      "Bash(node send-strategy-from-drive.js:*)",
+      "Bash(npm install:*)",
+      "Read(//c/Users/yurif/.claude/mcp-servers/garmin_mcp/**)",
+      "Bash(uv sync:*)",
+      "Bash(python:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
