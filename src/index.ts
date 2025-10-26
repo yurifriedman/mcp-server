@@ -796,8 +796,8 @@ class GmailMCPServer {
       console.log('✅ MCP client connected via SSE');
     });
 
-    // Start HTTP server
-    app.listen(PORT, () => {
+    // Start HTTP server - bind to 0.0.0.0 for Cloud Run
+    app.listen(PORT, '0.0.0.0', () => {
       console.log(`
 ╔═══════════════════════════════════════════════════════════╗
 ║         Gmail/Calendar MCP Server (HTTP Mode)             ║
@@ -808,9 +808,9 @@ class GmailMCPServer {
 ║  Tools: ${TOOLS.length} available                                   ║
 ╠═══════════════════════════════════════════════════════════╣
 ║  Endpoints:                                               ║
-║    Health Check: http://localhost:${PORT}/health           ║
-║    MCP Endpoint: http://localhost:${PORT}/mcp (POST)       ║
-║    Info: http://localhost:${PORT}/                         ║
+║    Health Check: http://0.0.0.0:${PORT}/health           ║
+║    MCP Endpoint: http://0.0.0.0:${PORT}/mcp (POST)       ║
+║    Info: http://0.0.0.0:${PORT}/                         ║
 ╚═══════════════════════════════════════════════════════════╝
       `);
     });
